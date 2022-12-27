@@ -32,9 +32,7 @@ const AddTodo: React.FC<Props> = ({ dataUpdate, setDataUpdate }) => {
             name: thingsTodo, id: uuid(), priority: priorityLevel, completed: false
         }
         postTodo(newTodo)
-        console.log(dataUpdate)
         setDataUpdate(!dataUpdate)
-        console.log(dataUpdate)
     }
     return (
         <div>
