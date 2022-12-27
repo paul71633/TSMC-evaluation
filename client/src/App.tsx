@@ -1,26 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from 'react'
+import AddTodo from './components/AddTodo'
+import TodoItem from './components/TodoItem'
+import { Todo } from './interfaces/Todo.interface'
 
-function App() {
+const App = () => {
+
+  const [backendData, setBackendData] = useState<Todo[]>([])
+  const [dataUpdate, setDataUpdate] = useState(false)
+  console.log(backendData)
+  useEffect(() => {
+    fetch("/api").then(
+      response => response.json()
+    ).then(data => {
+      setBackendData(data.todo)
+
+    })
+  }, [dataUpdate])
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>my todo list</h1>
+      <AddTodo dataUpdate={dataUpdate} setDataUpdate={setDataUpdate} />
+      {backendData ? <TodoItem backendData={backendData} />
+        : <h3>nothing yet...</h3>}
+
+
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
