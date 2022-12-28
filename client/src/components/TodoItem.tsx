@@ -18,7 +18,7 @@ interface todoCompleted {
 
 const TodoItem: React.FC<Props> = ({ backendData, dataUpdate, setDataUpdate }) => {
     const patchTodo = (data: todoCompleted) => {
-        fetch(`/api/todo/${data.id}`, 
+        fetch(`/api/todos/${data.id}`, 
         {method: "PATCH", 
          headers: {"Content-Type": "application/json"},
          body: JSON.stringify(data)

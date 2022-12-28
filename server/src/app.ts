@@ -21,13 +21,11 @@ app.get("/api/todos", (req: Request, res: Response) => {
 });
 
 app.post("/api/post", (req: Request, res: Response) => {
-  console.log(req.body);
   todos.push(req.body);
   return res.sendStatus(200);
 });
 
 app.delete("/api/todos/:id", (req: Request, res: Response) => {
-  console.log(req.params);
   todos.forEach((todo, key) => {
     if (todo.id == req.params.id) {
       todos.splice(key, 1);
@@ -36,15 +34,13 @@ app.delete("/api/todos/:id", (req: Request, res: Response) => {
   return res.sendStatus(200);
 })
 
-app.patch("/api/todo/:id", (req: Request, res: Response) => {
-  console.log(req.body);
+app.patch("/api/todos/:id", (req: Request, res: Response) => {
   const target = todos.find((todo) => todo.id === req.params.id);
   if (!target) {
     return res.status(404).json({ message: "target not found" });
   }
     target.completed = !req.body.completed;
     res.json(target);
-    return res.sendStatus(200);
 });
 
 app.all("/api", (req: Request, res: Response) => {

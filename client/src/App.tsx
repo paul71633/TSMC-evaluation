@@ -7,7 +7,6 @@ const App = () => {
 
   const [backendData, setBackendData] = useState<Todo[]>([]);
   const [dataUpdate, setDataUpdate] = useState(false);
-  console.log(backendData);
   useEffect(() => {
     fetch("/api/todos").then(
       response => response.json()
