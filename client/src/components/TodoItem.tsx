@@ -48,10 +48,13 @@ const TodoItem: React.FC<Props> = ({ backendData, dataUpdate, setDataUpdate }) =
     return (
         <div>
             {backendData.map((todo: Todo) =>
-                <div style={{display: "flex"}}>
+                <div style={{display: "flex", alignItems: "center"}}>
                     <input type="checkbox" id={todo.id} onChange={e => handleCheck(e)} checked={todo.completed} />
-                    <h3>{todo.name}</h3>
-                    <button id={todo.id} onClick={handleDelete}>DELETE</button>
+                    <h3 style={{ marginLeft: "10px" }}>{todo.name}</h3>
+                    <button id={todo.id} onClick={handleDelete} 
+                     style={{ marginLeft: "10px", height: "50%", background: "red", color: "white" }}>
+                        DELETE
+                    </button>
                 </div>
             )}
         </div>
