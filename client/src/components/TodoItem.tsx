@@ -11,10 +11,15 @@ interface todoID {
     id: string;
 }
 
+interface todoCompleted {
+    id: string;
+    completed: boolean;
+}
+
 const TodoItem: React.FC<Props> = ({ backendData, dataUpdate, setDataUpdate }) => {
-    const patchTodo = (data: todoID) => {
+    const patchTodo = (data: todoCompleted) => {
         fetch(`/api/todo/${data.id}`, 
-        {method: "patch", 
+        {method: "PATCH", 
          headers: {"Content-Type": "application/json"},
          body: JSON.stringify(data)
         }).then(response => console.log("Response", response))
@@ -31,10 +36,11 @@ const TodoItem: React.FC<Props> = ({ backendData, dataUpdate, setDataUpdate }) =
     }
 
     const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
-        console.log(e);
-        const patchData = {id: e.target.id};
+        console.log(e.target.checked);
+        const patchData = {id: e.target.id, completed: !e.target.checked};
         console.log(patchData);
         patchTodo(patchData);
+        setDataUpdate(!dataUpdate);
     }
 
     const handleDelete = (e: React.MouseEvent<HTMLElement>) => {
