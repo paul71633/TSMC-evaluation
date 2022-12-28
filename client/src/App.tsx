@@ -5,27 +5,23 @@ import { Todo } from './interfaces/Todo.interface'
 
 const App = () => {
 
-  const [backendData, setBackendData] = useState<Todo[]>([])
-  const [dataUpdate, setDataUpdate] = useState(false)
-  console.log(backendData)
+  const [backendData, setBackendData] = useState<Todo[]>([]);
+  const [dataUpdate, setDataUpdate] = useState(false);
   useEffect(() => {
-    fetch("/api").then(
+    fetch("/api/todos").then(
       response => response.json()
     ).then(data => {
-      setBackendData(data.todo)
-
+      setBackendData(data.todos)
     })
   }, [dataUpdate])
 
 
   return (
     <div>
-      <h1>my todo list</h1>
+      <h1>My Todo List</h1>
       <AddTodo dataUpdate={dataUpdate} setDataUpdate={setDataUpdate} />
-      {backendData ? <TodoItem backendData={backendData} />
-        : <h3>nothing yet...</h3>}
-
-
+      {backendData ? <TodoItem backendData={backendData} dataUpdate={dataUpdate} setDataUpdate={setDataUpdate} />
+        : <h3>Nothing Yet...</h3>}
     </div>
   )
 }

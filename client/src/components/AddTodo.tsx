@@ -3,18 +3,17 @@ import uuid from 'react-uuid';
 import { Todo } from '../interfaces/Todo.interface'
 
 interface Props {
-    dataUpdate: boolean
-    setDataUpdate: React.Dispatch<React.SetStateAction<boolean>>
+    dataUpdate: boolean;
+    setDataUpdate: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const AddTodo: React.FC<Props> = ({ dataUpdate, setDataUpdate }) => {
 
-    const [thingsTodo, setThingsTodo] = useState<string>("")
-    const [priorityLevel, setPriorityLevel] = useState<string>("high")
+    const [thingsTodo, setThingsTodo] = useState<string>("");
+    const [priorityLevel, setPriorityLevel] = useState<string>("high");
 
     const postTodo = (data: Todo) => {
-        const todo = data
-        fetch("/api", { method: "post", headers: { "Content-Type": "application/json" }, body: JSON.stringify(todo) })
+        fetch("/api/post", { method: "post", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) })
             .then(response => console.log("Response", response))
             .catch(error => {
                 console.log("Error", error)
@@ -31,15 +30,13 @@ const AddTodo: React.FC<Props> = ({ dataUpdate, setDataUpdate }) => {
         const newTodo = {
             name: thingsTodo, id: uuid(), priority: priorityLevel, completed: false
         }
-        postTodo(newTodo)
-        console.log(dataUpdate)
-        setDataUpdate(!dataUpdate)
-        console.log(dataUpdate)
+        postTodo(newTodo);
+        setDataUpdate(!dataUpdate);
     }
     return (
         <div>
             <form onSubmit={handleSubmit}>
-                <label htmlFor="thingsTodo">Things to do:&nbsp; </label>
+                <label htmlFor="thingsTodo">Things To Do:&nbsp; </label>
                 <input type="text" id="thingsTodo" value={thingsTodo} onChange={(e) => setThingsTodo(e.target.value)} required />
                 <label htmlFor="priority">&nbsp; &nbsp;  Priority Level:&nbsp; </label>
                 <select id="priority" value={priorityLevel} onChange={selectChange} >
@@ -47,7 +44,8 @@ const AddTodo: React.FC<Props> = ({ dataUpdate, setDataUpdate }) => {
                     <option value="alarming">Alarming</option>
                     <option value="low">Low</option>
                 </select>
-                <input type="submit" />
+                <input type="submit" value="SUBMIT"
+                 style={{ marginLeft: "10px", background: "green", color: "white" }} />
             </form>
         </div>
     )
