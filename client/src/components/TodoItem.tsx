@@ -1,16 +1,57 @@
+import React from "react";
 import { Todo } from "../interfaces/Todo.interface"
 
 interface Props {
-    backendData: Todo[]
+    backendData: Todo[];
+    dataUpdate: boolean;
+    setDataUpdate: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const TodoItem: React.FC<Props> = ({ backendData }) => {
+interface todoID {
+    id: string;
+}
+
+const TodoItem: React.FC<Props> = ({ backendData, dataUpdate, setDataUpdate }) => {
+    const patchTodo = (data: todoID) => {
+        fetch(`/api/todo/${data.id}`, 
+        {method: "patch", 
+         headers: {"Content-Type": "application/json"},
+         body: JSON.stringify(data)
+        }).then(response => console.log("Response", response))
+        .catch(error => {console.log("Error", error)})
+    }
+
+    const deleteTodo = (data: todoID) => {
+        fetch(`/api/todos/${data.id}`, 
+        {method: "DELETE", 
+         headers: {"Content-Type": "application/json"},
+         body: JSON.stringify(data)
+        }).then(response => console.log("Response", response))
+        .catch(error => {console.log("Error", error)})
+    }
+
+    const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
+        console.log(e);
+        const patchData = {id: e.target.id};
+        console.log(patchData);
+        patchTodo(patchData);
+    }
+
+    const handleDelete = (e: React.MouseEvent<HTMLElement>) => {
+        console.log(e);
+        const deleteData = {id: e.currentTarget.id};
+        console.log(deleteData);
+        deleteTodo(deleteData);
+        setDataUpdate(!dataUpdate);
+    }
+
     return (
         <div>
             {backendData.map((todo: Todo) =>
-                <div>
+                <div style={{display: "flex"}}>
+                    <input type="checkbox" id={todo.id} onChange={e => handleCheck(e)} checked={todo.completed} />
                     <h3>{todo.name}</h3>
-                    <button>{todo.completed ? "completed" : "uncomplete"}</button>
+                    <button id={todo.id} onClick={handleDelete}>DELETE</button>
                 </div>
             )}
         </div>

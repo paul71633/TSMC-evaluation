@@ -9,10 +9,10 @@ const App = () => {
   const [dataUpdate, setDataUpdate] = useState(false)
   console.log(backendData)
   useEffect(() => {
-    fetch("/api").then(
+    fetch("/api/todos").then(
       response => response.json()
     ).then(data => {
-      setBackendData(data.todo)
+      setBackendData(data.todos)
 
     })
   }, [dataUpdate])
@@ -22,7 +22,7 @@ const App = () => {
     <div>
       <h1>my todo list</h1>
       <AddTodo dataUpdate={dataUpdate} setDataUpdate={setDataUpdate} />
-      {backendData ? <TodoItem backendData={backendData} />
+      {backendData ? <TodoItem backendData={backendData} dataUpdate={dataUpdate} setDataUpdate={setDataUpdate} />
         : <h3>nothing yet...</h3>}
 
 
