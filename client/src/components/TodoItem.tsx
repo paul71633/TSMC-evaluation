@@ -45,19 +45,34 @@ const TodoItem: React.FC<Props> = ({ backendData, dataUpdate, setDataUpdate }) =
         setDataUpdate(!dataUpdate);
     }
 
+    const handleDeleteAll = () => {
+        console.log(backendData);
+        for (let i = 0; i < backendData.length; i++) {
+            let deleteData = {id: backendData[i].id};
+            deleteTodo(deleteData);
+        }
+        setDataUpdate(!dataUpdate);
+    }
+
     return (
-        <div>
-            {backendData.map((todo: Todo) =>
-                <div style={{display: "flex", alignItems: "center"}}>
-                    <input type="checkbox" id={todo.id} onChange={e => handleCheck(e)} checked={todo.completed} />
-                    <h3 style={{ marginLeft: "10px" }}>{todo.name}</h3>
-                    <button id={todo.id} onClick={handleDelete} 
-                     style={{ marginLeft: "10px", height: "50%", background: "red", color: "white" }}>
-                        DELETE
-                    </button>
-                </div>
-            )}
-        </div>
+        <>
+            <button onClick={handleDeleteAll} 
+             style={{ width: "20%", height: "30px", marginTop: "20px", background: "red", color: "white", fontWeight: "bold", fontSize: "16px" }}>
+                Delete All Tasks
+            </button>
+            <div>
+                {backendData.map((todo: Todo) =>
+                    <div style={{display: "flex", alignItems: "center"}}>
+                        <input type="checkbox" id={todo.id} onChange={e => handleCheck(e)} checked={todo.completed} />
+                        <h3 style={{ marginLeft: "10px" }}>{todo.name}</h3>
+                        <button id={todo.id} onClick={handleDelete} 
+                        style={{ marginLeft: "10px", height: "50%", background: "red", color: "white" }}>
+                            DELETE
+                        </button>
+                    </div>
+                )}
+            </div>
+        </>
     )
 }
 
