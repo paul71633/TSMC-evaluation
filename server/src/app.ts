@@ -43,6 +43,15 @@ app.patch("/api/todos/:id", (req: Request, res: Response) => {
     res.json(target);
 });
 
+app.patch("/api/todos/edit/:id", (req: Request, res: Response) => {
+  const target = todos.find((todo) => todo.id === req.params.id);
+  if (!target) {
+    return res.status(404).json({ message: "target not found" });
+  }
+    target.name = req.body.name;
+    res.json(target);
+});
+
 app.all("/api", (req: Request, res: Response) => {
   return res.sendStatus(200);
 });

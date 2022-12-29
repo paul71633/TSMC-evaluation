@@ -13,7 +13,7 @@ const AddTodo: React.FC<Props> = ({ dataUpdate, setDataUpdate }) => {
     const [priorityLevel, setPriorityLevel] = useState<string>("high");
 
     const postTodo = (data: Todo) => {
-        fetch("/api/post", { method: "post", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) })
+        fetch("/api/post", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) })
             .then(response => console.log("Response", response))
             .catch(error => {
                 console.log("Error", error)
