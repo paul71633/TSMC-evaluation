@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Todo } from "../interfaces/Todo.interface"
-import { text } from "node:stream/consumers";
+import { Todo } from "../interfaces/Todo.interface";
+import styled from 'styled-components';
 
 interface Props {
     backendData: Todo[];
@@ -102,36 +102,32 @@ const TodoItem: React.FC<Props> = ({ backendData, dataUpdate, setDataUpdate, sor
 
     return (
         <>
-            <button
-             onClick={sortTasks} 
-             style={{ width: "17%", height: "30px", marginTop: "20px", background: "gold", fontWeight: "bold", fontSize: "16px" }}>
+            <StyledButton onClick={sortTasks} style={{ background: "gold" }}>
                 Sort Tasks By Priority
-            </button>
-            <button 
-             onClick={handleDeleteAll} 
-             style={{ width: "17%", height: "30px", marginTop: "20px", marginLeft: "10px", background: "red", color: "white", fontWeight: "bold", fontSize: "16px" }}>
+            </StyledButton>
+            <StyledButton onClick={handleDeleteAll} style={{ marginLeft: "10px", background: "red", color: "white" }}>
                 Delete All Tasks
-            </button>
+            </StyledButton>
             <div>
                 {backendData.map((todo: Todo) =>
                     <div style={{display: "flex", alignItems: "center"}}>
                         <input type="checkbox" id={todo.id} onChange={e => handleCheck(e)} checked={todo.completed} />
-                        <h3 id={todo.id + "text"} style={{ marginLeft: "10px" }}>{todo.name}</h3>
+                        <h3 id={todo.id + "text"} style={{ marginLeft: "10px" }}>
+                            {todo.name}
+                        </h3>
                         <input id={todo.id + "textInput"} defaultValue={`${todo.name}`} style={{ display: "none", marginLeft: "10px" }}/>
                         {!editButtonClicked ? (
-                            <button id={todo.id + "edit"} onClick={e => handleEdit(e)}
-                            style={{ marginLeft: "10px", height: "50%" }}>
+                            <StyledIndividualButton id={todo.id + "edit"} onClick={e => handleEdit(e)} >
                                 EDIT
-                            </button>) : (
-                            <button id={todo.id + "save"} onClick={e => handleSave(e)}
-                            style={{ marginLeft: "10px", height: "50%" }}>
+                            </StyledIndividualButton>) : (
+                            <StyledIndividualButton id={todo.id + "save"} onClick={e => handleSave(e)} >
                                 SAVE
-                            </button>
+                            </StyledIndividualButton>
                         )}
-                        <button id={todo.id} onClick={handleDelete} 
-                        style={{ marginLeft: "10px", height: "50%", background: "red", color: "white" }}>
+                        <StyledIndividualButton id={todo.id} onClick={handleDelete} 
+                        style={{ background: "red", color: "white" }}>
                             DELETE
-                        </button>
+                        </StyledIndividualButton>
                     </div>
                 )}
             </div>
@@ -139,4 +135,17 @@ const TodoItem: React.FC<Props> = ({ backendData, dataUpdate, setDataUpdate, sor
     )
 }
 
-export default TodoItem
+const StyledButton = styled.button`
+    width: 17%;
+    height: 30px;
+    margin-top: 20px;
+    font-weight: bold;
+    font-size: 16px;
+`;
+
+const StyledIndividualButton = styled.button`
+    margin-left: 10px;
+    height: 50%;
+`;
+
+export default TodoItem;
