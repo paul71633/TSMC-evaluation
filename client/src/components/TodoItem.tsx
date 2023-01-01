@@ -22,10 +22,13 @@ interface todoCompleted {
 interface todoEdit {
     id: string;
     name: string;
+    priority: string;
 }
 
 const TodoItem: React.FC<Props> = ({ backendData, dataUpdate, setDataUpdate, sortData, setSortData }) => {
     const [editButtonClicked, setEditButtonClicked] = useState<boolean>(false);
+    const [editID, setEditID] = useState<number[]>([]);
+    const [priorityLevel, setPriorityLevel] = useState<string>("high");
 
     const patchTodo = (data: todoCompleted) => {
         fetch(`/api/todos/${data.id}`, 
@@ -64,21 +67,33 @@ const TodoItem: React.FC<Props> = ({ backendData, dataUpdate, setDataUpdate, sor
 
     const handleEdit = (e: React.MouseEvent<HTMLElement>) => {
         setEditButtonClicked(true);
-        const textInput = document.getElementById(e.currentTarget.id.replace("edit", "") + "textInput") as HTMLInputElement;
+        const targetID = e.currentTarget.id;
+        const regEx = /edit[0-9A-Za-z]+/;
+        const textInput = document.getElementById(targetID.replace(regEx, "") + "textInput") as HTMLInputElement;
+        const selectPriority = document.getElementById(targetID.replace(regEx, "") + "priority") as HTMLSelectElement;
+        setEditID(editID => [...editID, parseInt(targetID.replace(regEx, ""))]);
         textInput.style.display = "block";
+        selectPriority.style.display = "block";
     }
 
     const handleSave = (e: React.MouseEvent<HTMLElement>) => {
-        const text = document.getElementById(e.currentTarget.id.replace("save", "") + "text");
-        const textInput = document.getElementById(e.currentTarget.id.replace("save", "") + "textInput") as HTMLInputElement;
+        const targetID = e.currentTarget.id;
+        const regEx = /save[0-9A-Za-z]+/;
+        const text = document.getElementById(targetID.replace(regEx, "") + "text");
+        const textInput = document.getElementById(targetID.replace(regEx, "") + "textInput") as HTMLInputElement;
+        const selectPriority = document.getElementById(targetID.replace(regEx, "") + "priority") as HTMLSelectElement;
         textInput.style.display = "none";
+        selectPriority.style.display = "none";
         if (text) {
             text.innerHTML = textInput.value;
         }
-        const patchData = {id: e.currentTarget.id, name: textInput.value};
+        const patchData = {id: targetID.replace(/[0-9]+save/, ""), name: textInput.value, priority: selectPriority.value};
         patchEdit(patchData);
         setDataUpdate(!dataUpdate);
-        setEditButtonClicked(false);
+        setEditID(editID.filter(id => id !== parseInt(targetID.replace(regEx, ""))));
+        if (editID.length === 0) {
+            setEditButtonClicked(false);
+        }
     }
 
     const handleDelete = (e: React.MouseEvent<HTMLElement>) => {
@@ -100,6 +115,11 @@ const TodoItem: React.FC<Props> = ({ backendData, dataUpdate, setDataUpdate, sor
         setSortData(!sortData);
     }
 
+    const selectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const value = e.target.value;
+        setPriorityLevel(value);
+    };
+
     return (
         <>
             <StyledButton onClick={sortTasks} style={{ background: "gold" }}>
@@ -109,19 +129,24 @@ const TodoItem: React.FC<Props> = ({ backendData, dataUpdate, setDataUpdate, sor
                 Delete All Tasks
             </StyledButton>
             <div>
-                {backendData.map((todo: Todo) =>
+                {backendData.map((todo: Todo, index: number) =>
                     <div style={{display: "flex", alignItems: "center"}}>
                         <input type="checkbox" id={todo.id} onChange={e => handleCheck(e)} checked={todo.completed} />
-                        <h3 id={todo.id + "text"} style={{ marginLeft: "10px" }}>
+                        <h3 id={index.toString() + "text"} style={{ marginLeft: "10px" }}>
                             {todo.name}
                         </h3>
-                        <input id={todo.id + "textInput"} defaultValue={`${todo.name}`} style={{ display: "none", marginLeft: "10px" }}/>
-                        {!editButtonClicked ? (
-                            <StyledIndividualButton id={todo.id + "edit"} onClick={e => handleEdit(e)} >
-                                EDIT
-                            </StyledIndividualButton>) : (
-                            <StyledIndividualButton id={todo.id + "save"} onClick={e => handleSave(e)} >
+                        <input id={index.toString() + "textInput"} defaultValue={`${todo.name}`} style={{ display: "none", marginLeft: "10px" }}/>
+                        <select id={index.toString() + "priority"} value={priorityLevel} onChange={selectChange} style={{ display: "none", marginLeft: "10px" }}>
+                            <option value="High">High</option>
+                            <option value="Alarming">Alarming</option>
+                            <option value="Low">Low</option>
+                        </select>
+                        {editButtonClicked && editID.includes(index) ? (
+                            <StyledIndividualButton id={index.toString() + "save" + todo.id} onClick={e => handleSave(e)} >
                                 SAVE
+                            </StyledIndividualButton>) : (
+                            <StyledIndividualButton id={index.toString() + "edit" + todo.id} onClick={e => handleEdit(e)} >
+                                EDIT
                             </StyledIndividualButton>
                         )}
                         <StyledIndividualButton id={todo.id} onClick={handleDelete} 

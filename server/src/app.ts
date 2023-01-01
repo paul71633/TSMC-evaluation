@@ -3,9 +3,9 @@ import express, { Application, Request, Response } from "express";
 const app: Application = express();
 const port: number = 5001;
 const todos = [
-  { name: "mop the floor", id: "12fd31", priority: "high", completed: false },
-  { name: "wash the dishes", id: "1sfdgh232", priority: "low", completed: false },
-  { name: "do the laundry", id: "123hgj3", priority: "alarming", completed: false },
+  { name: "mop the floor", id: "12fd31", priority: "High", completed: false },
+  { name: "wash the dishes", id: "1sfdgh232", priority: "Low", completed: false },
+  { name: "do the laundry", id: "123hgj3", priority: "Alarming", completed: false },
 ];
 
 app.use(express.json());

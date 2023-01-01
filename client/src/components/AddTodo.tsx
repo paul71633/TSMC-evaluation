@@ -40,9 +40,9 @@ const AddTodo: React.FC<Props> = ({ dataUpdate, setDataUpdate }) => {
                 <input type="text" id="thingsTodo" value={thingsTodo} onChange={(e) => setThingsTodo(e.target.value)} required />
                 <label htmlFor="priority">&nbsp; &nbsp;  Priority Level:&nbsp; </label>
                 <select id="priority" value={priorityLevel} onChange={selectChange} >
-                    <option value="high">High</option>
-                    <option value="alarming">Alarming</option>
-                    <option value="low">Low</option>
+                    <option value="High">High</option>
+                    <option value="Alarming">Alarming</option>
+                    <option value="Low">Low</option>
                 </select>
                 <input type="submit" value="SUBMIT"
                  style={{ marginLeft: "10px", background: "green", color: "white" }} />
