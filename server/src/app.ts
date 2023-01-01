@@ -49,6 +49,7 @@ app.patch("/api/todos/edit/:id", (req: Request, res: Response) => {
     return res.status(404).json({ message: "target not found" });
   }
     target.name = req.body.name;
+    target.priority = req.body.priority;
     res.json(target);
 });
 

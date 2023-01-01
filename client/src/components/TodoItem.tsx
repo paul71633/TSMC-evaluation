@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Todo } from "../interfaces/Todo.interface";
 import styled from 'styled-components';
+import PriorityItems from "./PriorityItems";
 
 interface Props {
     backendData: Todo[];
@@ -28,7 +29,6 @@ interface todoEdit {
 const TodoItem: React.FC<Props> = ({ backendData, dataUpdate, setDataUpdate, sortData, setSortData }) => {
     const [editButtonClicked, setEditButtonClicked] = useState<boolean>(false);
     const [editID, setEditID] = useState<number[]>([]);
-    const [priorityLevel, setPriorityLevel] = useState<string>("high");
 
     const patchTodo = (data: todoCompleted) => {
         fetch(`/api/todos/${data.id}`, 
@@ -58,9 +58,7 @@ const TodoItem: React.FC<Props> = ({ backendData, dataUpdate, setDataUpdate, sor
     }
 
     const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
-        console.log(e.target.checked);
         const patchData = {id: e.target.id, completed: !e.target.checked};
-        console.log(patchData);
         patchTodo(patchData);
         setDataUpdate(!dataUpdate);
     }
@@ -115,11 +113,6 @@ const TodoItem: React.FC<Props> = ({ backendData, dataUpdate, setDataUpdate, sor
         setSortData(!sortData);
     }
 
-    const selectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const value = e.target.value;
-        setPriorityLevel(value);
-    };
-
     return (
         <>
             <StyledButton onClick={sortTasks} style={{ background: "gold" }}>
@@ -136,11 +129,7 @@ const TodoItem: React.FC<Props> = ({ backendData, dataUpdate, setDataUpdate, sor
                             {todo.name}
                         </h3>
                         <input id={index.toString() + "textInput"} defaultValue={`${todo.name}`} style={{ display: "none", marginLeft: "10px" }}/>
-                        <select id={index.toString() + "priority"} value={priorityLevel} onChange={selectChange} style={{ display: "none", marginLeft: "10px" }}>
-                            <option value="High">High</option>
-                            <option value="Alarming">Alarming</option>
-                            <option value="Low">Low</option>
-                        </select>
+                        <PriorityItems id={index.toString() + "priority"} style={{ display: "none", marginLeft: "10px" }} />
                         {editButtonClicked && editID.includes(index) ? (
                             <StyledIndividualButton id={index.toString() + "save" + todo.id} onClick={e => handleSave(e)} >
                                 SAVE

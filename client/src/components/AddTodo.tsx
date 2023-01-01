@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import uuid from 'react-uuid';
 import { Todo } from '../interfaces/Todo.interface'
+import PriorityItems from './PriorityItems';
 
 interface Props {
     dataUpdate: boolean;
@@ -10,7 +11,6 @@ interface Props {
 const AddTodo: React.FC<Props> = ({ dataUpdate, setDataUpdate }) => {
 
     const [thingsTodo, setThingsTodo] = useState<string>("");
-    const [priorityLevel, setPriorityLevel] = useState<string>("high");
 
     const postTodo = (data: Todo) => {
         fetch("/api/post", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) })
@@ -20,15 +20,11 @@ const AddTodo: React.FC<Props> = ({ dataUpdate, setDataUpdate }) => {
             })
     }
 
-    const selectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const value = e.target.value;
-        setPriorityLevel(value);
-    };
-
     const handleSubmit = (e: React.SyntheticEvent) => {
         e.preventDefault();
+        const selectPriority = document.getElementById("priority") as HTMLSelectElement;
         const newTodo = {
-            name: thingsTodo, id: uuid(), priority: priorityLevel, completed: false
+            name: thingsTodo, id: uuid(), priority: selectPriority.value, completed: false
         }
         postTodo(newTodo);
         setDataUpdate(!dataUpdate);
@@ -39,11 +35,7 @@ const AddTodo: React.FC<Props> = ({ dataUpdate, setDataUpdate }) => {
                 <label htmlFor="thingsTodo">Things To Do:&nbsp; </label>
                 <input type="text" id="thingsTodo" value={thingsTodo} onChange={(e) => setThingsTodo(e.target.value)} required />
                 <label htmlFor="priority">&nbsp; &nbsp;  Priority Level:&nbsp; </label>
-                <select id="priority" value={priorityLevel} onChange={selectChange} >
-                    <option value="High">High</option>
-                    <option value="Alarming">Alarming</option>
-                    <option value="Low">Low</option>
-                </select>
+                <PriorityItems id="priority" />
                 <input type="submit" value="SUBMIT"
                  style={{ marginLeft: "10px", background: "green", color: "white" }} />
             </form>
