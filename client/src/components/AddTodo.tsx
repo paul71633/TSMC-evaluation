@@ -13,7 +13,7 @@ const AddTodo: React.FC<Props> = ({ dataUpdate, setDataUpdate }) => {
     const [priorityLevel, setPriorityLevel] = useState<string>("high");
 
     const postTodo = (data: Todo) => {
-        fetch("/api/post", { method: "post", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) })
+        fetch("/api/post", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) })
             .then(response => console.log("Response", response))
             .catch(error => {
                 console.log("Error", error)
@@ -40,9 +40,9 @@ const AddTodo: React.FC<Props> = ({ dataUpdate, setDataUpdate }) => {
                 <input type="text" id="thingsTodo" value={thingsTodo} onChange={(e) => setThingsTodo(e.target.value)} required />
                 <label htmlFor="priority">&nbsp; &nbsp;  Priority Level:&nbsp; </label>
                 <select id="priority" value={priorityLevel} onChange={selectChange} >
-                    <option value="high">High</option>
-                    <option value="alarming">Alarming</option>
-                    <option value="low">Low</option>
+                    <option value="High">High</option>
+                    <option value="Alarming">Alarming</option>
+                    <option value="Low">Low</option>
                 </select>
                 <input type="submit" value="SUBMIT"
                  style={{ marginLeft: "10px", background: "green", color: "white" }} />
