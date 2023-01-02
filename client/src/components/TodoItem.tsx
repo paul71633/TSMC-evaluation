@@ -96,7 +96,7 @@ const TodoItem: React.FC<Props> = ({
 
     const handleSave = (e: React.MouseEvent<HTMLElement>) => {
         const targetID = e.currentTarget.id;
-        const regEx = /save[0-9A-Za-z]+/;
+        const regEx = /save[0-9A-Za-z\\-]+/;
         const text = document.getElementById(targetID.replace(regEx, "") + "text");
         const textInput = document.getElementById(targetID.replace(regEx, "") + "textInput") as HTMLInputElement;
         const selectPriority = document.getElementById(targetID.replace(regEx, "") + "priority") as HTMLSelectElement;
