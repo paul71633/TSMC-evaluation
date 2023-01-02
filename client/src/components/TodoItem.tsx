@@ -39,7 +39,6 @@ const TodoItem: React.FC<Props> = ({
     setSortDataByTime }) => {
     const [editButtonClicked, setEditButtonClicked] = useState<boolean>(false);
     const [editID, setEditID] = useState<number[]>([]);
-    const [inputValue, setInputValue] = useState<string>("");
 
     const patchTodo = (data: todoCompleted) => {
         fetch(`/api/todos/${data.id}`, 
@@ -83,7 +82,7 @@ const TodoItem: React.FC<Props> = ({
     const handleEdit = (e: React.MouseEvent<HTMLElement>) => {
         setEditButtonClicked(true);
         const targetID = e.currentTarget.id;
-        const regEx = /edit[0-9A-Za-z]+/;
+        const regEx = /edit[0-9A-Za-z\\-]+/;
         const textInput = document.getElementById(targetID.replace(regEx, "") + "textInput") as HTMLInputElement;
         const selectPriority = document.getElementById(targetID.replace(regEx, "") + "priority") as HTMLSelectElement;
         const text = document.getElementById(targetID.replace(regEx, "") + "text");
