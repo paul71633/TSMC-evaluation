@@ -7,8 +7,10 @@ interface Props {
     backendData: Todo[];
     dataUpdate: boolean;
     setDataUpdate: React.Dispatch<React.SetStateAction<boolean>>;
-    sortData: boolean;
-    setSortData: React.Dispatch<React.SetStateAction<boolean>>;
+    sortDataByPriority: boolean;
+    setSortDataByPriority: React.Dispatch<React.SetStateAction<boolean>>;
+    sortDataByTime: boolean;
+    setSortDataByTime: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface todoID {
@@ -18,6 +20,7 @@ interface todoID {
 interface todoCompleted {
     id: string;
     completed: boolean;
+    completedTime: Date;
 }
 
 interface todoEdit {
@@ -26,7 +29,14 @@ interface todoEdit {
     priority: string;
 }
 
-const TodoItem: React.FC<Props> = ({ backendData, dataUpdate, setDataUpdate, sortData, setSortData }) => {
+const TodoItem: React.FC<Props> = ({ 
+    backendData, 
+    dataUpdate, 
+    setDataUpdate, 
+    sortDataByPriority, 
+    setSortDataByPriority,
+    sortDataByTime, 
+    setSortDataByTime }) => {
     const [editButtonClicked, setEditButtonClicked] = useState<boolean>(false);
     const [editID, setEditID] = useState<number[]>([]);
 
@@ -58,8 +68,14 @@ const TodoItem: React.FC<Props> = ({ backendData, dataUpdate, setDataUpdate, sor
     }
 
     const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const patchData = {id: e.target.id, completed: !e.target.checked};
-        patchTodo(patchData);
+        const date = new Date();
+        if (e.target.checked) {
+            const patchDataCompleted = {id: e.target.id, completed: !e.target.checked, completedTime: date};
+            patchTodo(patchDataCompleted);
+        } else {
+            const patchDataNotCompleted = {id: e.target.id, completed: !e.target.checked, completedTime: new Date(8640000000000000)};
+            patchTodo(patchDataNotCompleted);
+        }
         setDataUpdate(!dataUpdate);
     }
 
@@ -109,14 +125,20 @@ const TodoItem: React.FC<Props> = ({ backendData, dataUpdate, setDataUpdate, sor
         setDataUpdate(!dataUpdate);
     }
 
-    const sortTasks = () => {
-        setSortData(!sortData);
+    const sortTasksByPriority = () => {
+        setSortDataByPriority(!sortDataByPriority);
+    }
+    const sortTasksByTime = () => {
+        setSortDataByTime(!sortDataByTime);
     }
 
     return (
         <>
-            <StyledButton onClick={sortTasks} style={{ background: "gold" }}>
+            <StyledButton onClick={sortTasksByPriority} style={{ background: "gold" }}>
                 Sort Tasks By Priority
+            </StyledButton>
+            <StyledButton onClick={sortTasksByTime} style={{ marginLeft: "10px", background: "gold" }}>
+                Sort Tasks By Completed Time
             </StyledButton>
             <StyledButton onClick={handleDeleteAll} style={{ marginLeft: "10px", background: "red", color: "white" }}>
                 Delete All Tasks
@@ -150,7 +172,7 @@ const TodoItem: React.FC<Props> = ({ backendData, dataUpdate, setDataUpdate, sor
 }
 
 const StyledButton = styled.button`
-    width: 17%;
+    width: 20%;
     height: 30px;
     margin-top: 20px;
     font-weight: bold;
