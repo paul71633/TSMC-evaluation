@@ -39,6 +39,7 @@ const TodoItem: React.FC<Props> = ({
     setSortDataByTime }) => {
     const [editButtonClicked, setEditButtonClicked] = useState<boolean>(false);
     const [editID, setEditID] = useState<number[]>([]);
+    const [inputValue, setInputValue] = useState<string>("");
 
     const patchTodo = (data: todoCompleted) => {
         fetch(`/api/todos/${data.id}`, 
@@ -85,7 +86,11 @@ const TodoItem: React.FC<Props> = ({
         const regEx = /edit[0-9A-Za-z]+/;
         const textInput = document.getElementById(targetID.replace(regEx, "") + "textInput") as HTMLInputElement;
         const selectPriority = document.getElementById(targetID.replace(regEx, "") + "priority") as HTMLSelectElement;
+        const text = document.getElementById(targetID.replace(regEx, "") + "text");
         setEditID(editID => [...editID, parseInt(targetID.replace(regEx, ""))]);
+        if (text) {
+            textInput.defaultValue = text.innerHTML
+        }
         textInput.style.display = "block";
         selectPriority.style.display = "block";
     }
@@ -117,7 +122,6 @@ const TodoItem: React.FC<Props> = ({
     }
 
     const handleDeleteAll = () => {
-        console.log(backendData);
         for (let i = 0; i < backendData.length; i++) {
             let deleteData = {id: backendData[i].id};
             deleteTodo(deleteData);
@@ -150,7 +154,7 @@ const TodoItem: React.FC<Props> = ({
                         <h3 id={index.toString() + "text"} style={{ marginLeft: "10px" }}>
                             {todo.name}
                         </h3>
-                        <input id={index.toString() + "textInput"} defaultValue={`${todo.name}`} style={{ display: "none", marginLeft: "10px" }}/>
+                        <input id={index.toString() + "textInput"} style={{ display: "none", marginLeft: "10px" }}/>
                         <PriorityItems id={index.toString() + "priority"} style={{ display: "none", marginLeft: "10px" }} />
                         {editButtonClicked && editID.includes(index) ? (
                             <StyledIndividualButton id={index.toString() + "save" + todo.id} onClick={e => handleSave(e)} >

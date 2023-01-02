@@ -56,7 +56,6 @@ const App = () => {
     }
   }, [dataUpdate, sortDataByPriority, sortDataByTime])
 
-
   return (
     <div>
       <h1>My Todo List</h1>
