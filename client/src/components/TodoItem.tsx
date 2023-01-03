@@ -128,11 +128,21 @@ const TodoItem: React.FC<Props> = ({
         setDataUpdate(!dataUpdate);
     }
 
+    const fitInputText = () => {
+        const textInput = document.getElementsByTagName("input");
+        const text = document.getElementsByTagName("h3");
+        for (let i = 0; i < text.length; i++) {
+            textInput[i + 1].defaultValue = text[i].innerHTML;
+        }
+    }
+
     const sortTasksByPriority = () => {
         setSortDataByPriority(!sortDataByPriority);
+        fitInputText();
     }
     const sortTasksByTime = () => {
         setSortDataByTime(!sortDataByTime);
+        fitInputText();
     }
 
     return (
