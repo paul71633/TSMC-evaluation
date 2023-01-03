@@ -154,7 +154,7 @@ const TodoItem: React.FC<Props> = ({
                             {todo.name}
                         </h3>
                         <input id={index.toString() + "textInput"} style={{ display: "none", marginLeft: "10px" }}/>
-                        <PriorityItems id={index.toString() + "priority"} style={{ display: "none", marginLeft: "10px" }} />
+                        <PriorityItems id={index.toString() + "priority"} value={todo.priority} style={{ display: "none", marginLeft: "10px" }} />
                         {editButtonClicked && editID.includes(index) ? (
                             <StyledIndividualButton id={index.toString() + "save" + todo.id} onClick={e => handleSave(e)} >
                                 SAVE
