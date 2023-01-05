@@ -24,7 +24,7 @@ const AddTodo: React.FC<Props> = ({ dataUpdate, setDataUpdate }) => {
         e.preventDefault();
         const selectPriority = document.getElementById("priority") as HTMLSelectElement;
         const newTodo = {
-            name: thingsTodo, id: uuid(), priority: selectPriority.value, completed: false
+            name: thingsTodo, id: uuid(), priority: selectPriority.value, completed: false, completedTime: new Date(8640000000000000)
         }
         postTodo(newTodo);
         setDataUpdate(!dataUpdate);

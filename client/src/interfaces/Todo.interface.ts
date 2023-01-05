@@ -3,4 +3,5 @@ export interface Todo {
   id: string;
   priority: string;
   completed: boolean;
+  completedTime: Date;
 }

@@ -2,13 +2,16 @@ import React, { useState } from "react";
 import { Todo } from "../interfaces/Todo.interface";
 import styled from 'styled-components';
 import PriorityItems from "./PriorityItems";
+import EditInput from "./EditInput";
 
 interface Props {
     backendData: Todo[];
     dataUpdate: boolean;
     setDataUpdate: React.Dispatch<React.SetStateAction<boolean>>;
-    sortData: boolean;
-    setSortData: React.Dispatch<React.SetStateAction<boolean>>;
+    sortDataByPriority: boolean;
+    setSortDataByPriority: React.Dispatch<React.SetStateAction<boolean>>;
+    sortDataByTime: boolean;
+    setSortDataByTime: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface todoID {
@@ -18,6 +21,7 @@ interface todoID {
 interface todoCompleted {
     id: string;
     completed: boolean;
+    completedTime: Date;
 }
 
 interface todoEdit {
@@ -26,7 +30,14 @@ interface todoEdit {
     priority: string;
 }
 
-const TodoItem: React.FC<Props> = ({ backendData, dataUpdate, setDataUpdate, sortData, setSortData }) => {
+const TodoItem: React.FC<Props> = ({ 
+    backendData, 
+    dataUpdate, 
+    setDataUpdate, 
+    sortDataByPriority, 
+    setSortDataByPriority,
+    sortDataByTime, 
+    setSortDataByTime }) => {
     const [editButtonClicked, setEditButtonClicked] = useState<boolean>(false);
     const [editID, setEditID] = useState<number[]>([]);
 
@@ -58,15 +69,21 @@ const TodoItem: React.FC<Props> = ({ backendData, dataUpdate, setDataUpdate, sor
     }
 
     const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const patchData = {id: e.target.id, completed: !e.target.checked};
-        patchTodo(patchData);
+        const date = new Date();
+        if (e.target.checked) {
+            const patchDataCompleted = {id: e.target.id, completed: !e.target.checked, completedTime: date};
+            patchTodo(patchDataCompleted);
+        } else {
+            const patchDataNotCompleted = {id: e.target.id, completed: !e.target.checked, completedTime: new Date(8640000000000000)};
+            patchTodo(patchDataNotCompleted);
+        }
         setDataUpdate(!dataUpdate);
     }
 
     const handleEdit = (e: React.MouseEvent<HTMLElement>) => {
         setEditButtonClicked(true);
         const targetID = e.currentTarget.id;
-        const regEx = /edit[0-9A-Za-z]+/;
+        const regEx = /edit[0-9A-Za-z\\-]+/;
         const textInput = document.getElementById(targetID.replace(regEx, "") + "textInput") as HTMLInputElement;
         const selectPriority = document.getElementById(targetID.replace(regEx, "") + "priority") as HTMLSelectElement;
         setEditID(editID => [...editID, parseInt(targetID.replace(regEx, ""))]);
@@ -76,7 +93,7 @@ const TodoItem: React.FC<Props> = ({ backendData, dataUpdate, setDataUpdate, sor
 
     const handleSave = (e: React.MouseEvent<HTMLElement>) => {
         const targetID = e.currentTarget.id;
-        const regEx = /save[0-9A-Za-z]+/;
+        const regEx = /save[0-9A-Za-z\\-]+/;
         const text = document.getElementById(targetID.replace(regEx, "") + "text");
         const textInput = document.getElementById(targetID.replace(regEx, "") + "textInput") as HTMLInputElement;
         const selectPriority = document.getElementById(targetID.replace(regEx, "") + "priority") as HTMLSelectElement;
@@ -101,7 +118,6 @@ const TodoItem: React.FC<Props> = ({ backendData, dataUpdate, setDataUpdate, sor
     }
 
     const handleDeleteAll = () => {
-        console.log(backendData);
         for (let i = 0; i < backendData.length; i++) {
             let deleteData = {id: backendData[i].id};
             deleteTodo(deleteData);
@@ -109,14 +125,20 @@ const TodoItem: React.FC<Props> = ({ backendData, dataUpdate, setDataUpdate, sor
         setDataUpdate(!dataUpdate);
     }
 
-    const sortTasks = () => {
-        setSortData(!sortData);
+    const sortTasksByPriority = () => {
+        setSortDataByPriority(!sortDataByPriority);
+    }
+    const sortTasksByTime = () => {
+        setSortDataByTime(!sortDataByTime);
     }
 
     return (
         <>
-            <StyledButton onClick={sortTasks} style={{ background: "gold" }}>
+            <StyledButton onClick={sortTasksByPriority} style={{ background: "gold" }}>
                 Sort Tasks By Priority
+            </StyledButton>
+            <StyledButton onClick={sortTasksByTime} style={{ marginLeft: "10px", background: "gold" }}>
+                Sort Tasks By Completed Time
             </StyledButton>
             <StyledButton onClick={handleDeleteAll} style={{ marginLeft: "10px", background: "red", color: "white" }}>
                 Delete All Tasks
@@ -128,8 +150,19 @@ const TodoItem: React.FC<Props> = ({ backendData, dataUpdate, setDataUpdate, sor
                         <h3 id={index.toString() + "text"} style={{ marginLeft: "10px" }}>
                             {todo.name}
                         </h3>
-                        <input id={index.toString() + "textInput"} defaultValue={`${todo.name}`} style={{ display: "none", marginLeft: "10px" }}/>
-                        <PriorityItems id={index.toString() + "priority"} style={{ display: "none", marginLeft: "10px" }} />
+                        <EditInput 
+                            id={index.toString() + "textInput"}
+                            value={todo.name}
+                            sortDataByPriority={sortDataByPriority}
+                            sortDataByTime={sortDataByTime} 
+                        />
+                        <PriorityItems 
+                            id={index.toString() + "priority"} 
+                            value={todo.priority} 
+                            style={{ display: "none", marginLeft: "10px" }}
+                            sortDataByPriority={sortDataByPriority}
+                            sortDataByTime={sortDataByTime} 
+                        />
                         {editButtonClicked && editID.includes(index) ? (
                             <StyledIndividualButton id={index.toString() + "save" + todo.id} onClick={e => handleSave(e)} >
                                 SAVE
@@ -150,7 +183,7 @@ const TodoItem: React.FC<Props> = ({ backendData, dataUpdate, setDataUpdate, sor
 }
 
 const StyledButton = styled.button`
-    width: 17%;
+    width: 20%;
     height: 30px;
     margin-top: 20px;
     font-weight: bold;
