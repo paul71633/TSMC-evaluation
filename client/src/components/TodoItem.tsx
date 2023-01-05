@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Todo } from "../interfaces/Todo.interface";
 import styled from 'styled-components';
 import PriorityItems from "./PriorityItems";
+import EditInput from "./EditInput";
 
 interface Props {
     backendData: Todo[];
@@ -85,11 +86,7 @@ const TodoItem: React.FC<Props> = ({
         const regEx = /edit[0-9A-Za-z\\-]+/;
         const textInput = document.getElementById(targetID.replace(regEx, "") + "textInput") as HTMLInputElement;
         const selectPriority = document.getElementById(targetID.replace(regEx, "") + "priority") as HTMLSelectElement;
-        const text = document.getElementById(targetID.replace(regEx, "") + "text");
         setEditID(editID => [...editID, parseInt(targetID.replace(regEx, ""))]);
-        if (text) {
-            textInput.defaultValue = text.innerHTML
-        }
         textInput.style.display = "block";
         selectPriority.style.display = "block";
     }
@@ -128,21 +125,11 @@ const TodoItem: React.FC<Props> = ({
         setDataUpdate(!dataUpdate);
     }
 
-    const fitInputText = () => {
-        const textInput = document.getElementsByTagName("input");
-        const text = document.getElementsByTagName("h3");
-        for (let i = 0; i < text.length; i++) {
-            textInput[i + 1].defaultValue = text[i].innerHTML;
-        }
-    }
-
     const sortTasksByPriority = () => {
         setSortDataByPriority(!sortDataByPriority);
-        fitInputText();
     }
     const sortTasksByTime = () => {
         setSortDataByTime(!sortDataByTime);
-        fitInputText();
     }
 
     return (
@@ -163,7 +150,12 @@ const TodoItem: React.FC<Props> = ({
                         <h3 id={index.toString() + "text"} style={{ marginLeft: "10px" }}>
                             {todo.name}
                         </h3>
-                        <input id={index.toString() + "textInput"} style={{ display: "none", marginLeft: "10px" }}/>
+                        <EditInput 
+                            id={index.toString() + "textInput"}
+                            value={todo.name}
+                            sortDataByPriority={sortDataByPriority}
+                            sortDataByTime={sortDataByTime} 
+                        />
                         <PriorityItems 
                             id={index.toString() + "priority"} 
                             value={todo.priority} 
