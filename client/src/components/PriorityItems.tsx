@@ -1,13 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface Props {
     id: string;
     style ?: Object;
     value ?: string;
+    sortDataByPriority?: boolean;
 }
 
-const PriorityItems: React.FC<Props> = ({ id, style, value }) => {
+const PriorityItems: React.FC<Props> = ({ id, style, value, sortDataByPriority }) => {
     const [priorityLevel, setPriorityLevel] = useState<string>(value ? value : "High");
+    
+    useEffect(() => {
+        if (value) {
+            setPriorityLevel(value);
+        }
+    }, [sortDataByPriority, value])
     
     const selectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const value = e.target.value;
