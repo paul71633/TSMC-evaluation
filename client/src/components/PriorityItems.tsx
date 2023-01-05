@@ -5,16 +5,17 @@ interface Props {
     style ?: Object;
     value ?: string;
     sortDataByPriority?: boolean;
+    sortDataByTime?: boolean;
 }
 
-const PriorityItems: React.FC<Props> = ({ id, style, value, sortDataByPriority }) => {
+const PriorityItems: React.FC<Props> = ({ id, style, value, sortDataByPriority, sortDataByTime }) => {
     const [priorityLevel, setPriorityLevel] = useState<string>(value ? value : "High");
-    
+
     useEffect(() => {
         if (value) {
             setPriorityLevel(value);
         }
-    }, [sortDataByPriority, value])
+    }, [sortDataByPriority, sortDataByTime, value])
     
     const selectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const value = e.target.value;
