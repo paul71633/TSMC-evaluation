@@ -3,6 +3,8 @@ import { Todo } from "../interfaces/Todo.interface";
 import styled from 'styled-components';
 import PriorityItems from "./PriorityItems";
 import EditInput from "./EditInput";
+import { deleteTodo, patchEdit, patchTodo } from "./api";
+import OperationButtons from "./OperationButtons";
 
 interface Props {
     backendData: Todo[];
@@ -12,22 +14,6 @@ interface Props {
     setSortDataByPriority: React.Dispatch<React.SetStateAction<boolean>>;
     sortDataByTime: boolean;
     setSortDataByTime: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-interface todoID {
-    id: string;
-}
-
-interface todoCompleted {
-    id: string;
-    completed: boolean;
-    completedTime: Date;
-}
-
-interface todoEdit {
-    id: string;
-    name: string;
-    priority: string;
 }
 
 const TodoItem: React.FC<Props> = ({ 
@@ -40,33 +26,6 @@ const TodoItem: React.FC<Props> = ({
     setSortDataByTime }) => {
     const [editButtonClicked, setEditButtonClicked] = useState<boolean>(false);
     const [editID, setEditID] = useState<number[]>([]);
-
-    const patchTodo = (data: todoCompleted) => {
-        fetch(`/api/todos/${data.id}`, 
-        {method: "PATCH", 
-         headers: {"Content-Type": "application/json"},
-         body: JSON.stringify(data)
-        }).then(response => console.log("Response", response))
-        .catch(error => {console.log("Error", error)})
-    }
-
-    const patchEdit = (data: todoEdit) => {
-        fetch(`/api/todos/edit/${data.id}`, 
-        {method: "PATCH", 
-         headers: {"Content-Type": "application/json"},
-         body: JSON.stringify(data)
-        }).then(response => console.log("Response", response))
-        .catch(error => {console.log("Error", error)})
-    }
-
-    const deleteTodo = (data: todoID) => {
-        fetch(`/api/todos/${data.id}`, 
-        {method: "DELETE", 
-         headers: {"Content-Type": "application/json"},
-         body: JSON.stringify(data)
-        }).then(response => console.log("Response", response))
-        .catch(error => {console.log("Error", error)})
-    }
 
     const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
         const date = new Date();
@@ -117,32 +76,12 @@ const TodoItem: React.FC<Props> = ({
         setDataUpdate(!dataUpdate);
     }
 
-    const handleDeleteAll = () => {
-        for (let i = 0; i < backendData.length; i++) {
-            let deleteData = {id: backendData[i].id};
-            deleteTodo(deleteData);
-        }
-        setDataUpdate(!dataUpdate);
-    }
-
-    const sortTasksByPriority = () => {
-        setSortDataByPriority(!sortDataByPriority);
-    }
-    const sortTasksByTime = () => {
-        setSortDataByTime(!sortDataByTime);
-    }
-
     return (
         <>
-            <StyledButton onClick={sortTasksByPriority} style={{ background: "gold" }}>
-                Sort Tasks By Priority
-            </StyledButton>
-            <StyledButton onClick={sortTasksByTime} style={{ marginLeft: "10px", background: "gold" }}>
-                Sort Tasks By Completed Time
-            </StyledButton>
-            <StyledButton onClick={handleDeleteAll} style={{ marginLeft: "10px", background: "red", color: "white" }}>
-                Delete All Tasks
-            </StyledButton>
+            <OperationButtons backendData={backendData} dataUpdate={dataUpdate} setDataUpdate={setDataUpdate}
+                sortDataByPriority={sortDataByPriority} setSortDataByPriority={setSortDataByPriority}
+                sortDataByTime={sortDataByTime} setSortDataByTime={setSortDataByTime}
+            />
             <div>
                 {backendData.map((todo: Todo, index: number) =>
                     <div style={{display: "flex", alignItems: "center"}}>
@@ -181,14 +120,6 @@ const TodoItem: React.FC<Props> = ({
         </>
     )
 }
-
-const StyledButton = styled.button`
-    width: 20%;
-    height: 30px;
-    margin-top: 20px;
-    font-weight: bold;
-    font-size: 16px;
-`;
 
 const StyledIndividualButton = styled.button`
     margin-left: 10px;
