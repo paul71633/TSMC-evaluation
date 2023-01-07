@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="6" failures="0" errors="0" time="3.418">
+  <testsuite name="AddTodo Component" errors="0" failures="0" skipped="0" timestamp="2023-01-07T20:28:36" time="1.4" tests="2">
+    <testcase classname="AddTodo Component should function postTodo work?" name="AddTodo Component should function postTodo work?" time="0.041">
+    </testcase>
+    <testcase classname="App Component should function postTodo show message when api fails" name="App Component should function postTodo show message when api fails" time="0.016">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2023-01-07T20:28:36" time="1.393" tests="4">
+    <testcase classname=" HTML SOURCE CODE" name=" HTML SOURCE CODE" time="0.038">
+    </testcase>
+    <testcase classname=" UI ===&gt; check TITLE is &apos;My Todo List&apos;" name=" UI ===&gt; check TITLE is &apos;My Todo List&apos;" time="0.02">
+    </testcase>
+    <testcase classname=" UI ===&gt; check Todo input: name, priority, and submit button" name=" UI ===&gt; check Todo input: name, priority, and submit button" time="0.008">
+    </testcase>
+    <testcase classname=" UI ===&gt; check TodoItem OPeration Button" name=" UI ===&gt; check TodoItem OPeration Button" time="0.015">
+    </testcase>
+  </testsuite>
+</testsuites>
