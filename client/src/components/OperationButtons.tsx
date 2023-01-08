@@ -1,5 +1,6 @@
 import { Todo } from "../interfaces/Todo.interface";
 import styled from 'styled-components';
+import { deleteTodo } from "./api";
 
 // define "Props" interface with seven members 
 interface Props {
@@ -12,9 +13,6 @@ interface Props {
     setSortDataByTime: React.Dispatch<React.SetStateAction<boolean>>;
 }
 // define "todoID" interface with one property 'id' 
-interface todoID {
-    id: string;
-}
 
 // define component AddTodo with properties(Props)
 const OperationButtons: React.FC<Props> = ({ 
@@ -26,17 +24,6 @@ const OperationButtons: React.FC<Props> = ({
     sortDataByTime, 
     setSortDataByTime 
 }) => {
-    const deleteTodo = (data: todoID) => {
-        fetch(`/api/todos/${data.id}`, 
-            {
-                method: "DELETE", 
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(data)
-            }
-        )
-        .then(response => console.log("Response", response))
-        .catch(error => {console.log("Error", error)})
-    }
  
     const handleDeleteAll = () => {
         for (let i = 0; i < backendData.length; i++) {

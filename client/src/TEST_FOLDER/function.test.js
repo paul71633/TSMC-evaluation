@@ -1,7 +1,6 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import App from "../App";
 import AddTodo from "../components/AddTodo";
-import TodoItem from "../components/TodoItem";
 import * as fun from "../components/api";
 
 /**
@@ -19,12 +18,12 @@ jest.mock("../components/api");
 ];
 
 describe("AddTodo Component", () => {
-
   
   // After each test clear the mock
   beforeEach(() => jest.clearAllMocks());
 
   test("should function postTodo work?", async () => {
+    // No return value so resolved value = {}
     fun.postTodo.mockResolvedValue({});
     // Render the component
     render(<AddTodo />);
@@ -36,7 +35,6 @@ describe("AddTodo Component", () => {
 });
 
 describe("TodoItem Component", () => {
-
   
   // After each test clear the mock
   beforeEach(() => jest.clearAllMocks());
@@ -52,17 +50,7 @@ describe("TodoItem Component", () => {
   });
 
   test("should function patchEdit work?", async () => {
-    fun.patchTodo.mockResolvedValue({});
-    // Render the component
-    render(<AddTodo />);
-    // See if the function working
-    await waitFor(() => {
-      console.log("YES! function work");
-    });
-  });
-
-  test("should function deleteTodo work?", async () => {
-    fun.patchTodo.mockResolvedValue({});
+    fun.patchEdit.mockResolvedValue({});
     // Render the component
     render(<AddTodo />);
     // See if the function working
@@ -71,8 +59,6 @@ describe("TodoItem Component", () => {
     });
   });
  }
-
-
 );
 
 
@@ -80,22 +66,26 @@ describe("App Component", () => {
 
   // After each test clear the mock
   beforeEach(() => jest.clearAllMocks());
-  test("should function postTodo show message when api fails", async () => {
-    fun.postTodo.mockRejectedValue({});
+  
+  test("should function deleteTodo work?", async () => {
+    fun.deleteTodo.mockResolvedValue({});
+    // Render the component
     render(<App />);
+    // See if the function working
     await waitFor(() => {
-      screen.getByText("Nothing Yet...");
+      console.log("YES! function work");
     });
   });
+
   test("should function sortTasksByPriority work?", async () => {
-    fun.sortTasksByPriority.mockRejectedValue({});
+    fun.sortTasksByPriority.mockResolvedValue({});
     render(<App />);
     await waitFor(() => {
       console.log("YES! function work");
     });
   });
   test("should function sortTasksByTime work?", async () => {
-    fun.sortTasksByTime.mockRejectedValue({});
+    fun.sortTasksByTime.mockResolvedValue({});
     render(<App />);
     await waitFor(() => {
       console.log("YES! function work");

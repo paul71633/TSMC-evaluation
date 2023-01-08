@@ -8,11 +8,11 @@ import App from "../App";
 import OperationButtons from "../components/OperationButtons";
 import AddTodo from "../components/AddTodo";
 
-test("HTML SOURCE CODE", () => {
+test("AddTodo Component HTML SOURCE CODE", () => {
   const div = document.createElement("div");
   // eslint-disable-next-line testing-library/no-unnecessary-act
   act(() => {
-    console.log("-------HTML SOURCE CODE------");
+    console.log("-------AddTodo Component HTML SOURCE CODE------");
     const root = ReactDOM.createRoot(div);
     root.render(
       <React.StrictMode>
@@ -26,7 +26,7 @@ test("HTML SOURCE CODE", () => {
 });
 
 test("UI ===> check TITLE is 'My Todo List'", () => {
-  console.log("-------STAR TEST UI1------");
+  console.log("-------START TEST UI1------");
   render(<App />);
   const TITLE = screen.getByText(/My Todo List/i);
   expect(TITLE).toBeInTheDocument();
@@ -37,7 +37,7 @@ test("UI ===> check Todo input: name, priority, and submit button", () => {
   const div = document.createElement("div");
   // eslint-disable-next-line testing-library/no-unnecessary-act
   act(() => {
-    console.log("-------STAR TEST UI2------");
+    console.log("-------START TEST UI2------");
     const root = ReactDOM.createRoot(div);
     root.render(
       <React.StrictMode>
@@ -63,7 +63,7 @@ test("UI ===> check Todo input: name, priority, and submit button", () => {
   console.log("--------TEST UI END2------");
 });
 
-it("UI ===> check TodoItem OPeration Button", () => {
+test("UI ===> check TodoItem Operation Button", () => {
   const div = document.createElement("div");
   // eslint-disable-next-line testing-library/no-unnecessary-act
   act(() => {
