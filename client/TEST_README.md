@@ -26,13 +26,13 @@ TEST LIST
 --------------------------------------------
    Test Suite2
    =========================================
-   1.AddTodo Component -> should function postTodo work?
-   2.TodoItem Component -> should function patchTodo work?
-   3.TodoItem Component -> should function patchEdit work?
-   4.TodoItem Component -> should function deleteTodo work?
-   5.App Component -> should function postTodo show message when api fails?
-   6.App Component -> should function sortTasksByPriority work?
-   7.App Component -> should function sortTasksByTime work? 
+   1.AddTodo Component -> Does function postTodo work?
+   2.TodoItem Component -> Does function patchTodo work?
+   3.TodoItem Component -> Does function patchEdit work?
+   4.TodoItem Component -> Does function deleteTodo work?
+   5.App Component -> Does function deleteTodo show message when api fails?
+   6.App Component -> Does function sortTasksByPriority work?
+   7.App Component -> Does function sortTasksByTime work? 
 
 #  Command
  test to show format data and file(junit.xml)

@@ -1,7 +1,3 @@
-// api.js
-
-
-// interfaces
 import { Todo } from '../interfaces/Todo.interface'
 
 interface todoID {
@@ -22,15 +18,13 @@ interface todoEdit {
 
 // function in AddTodo component
 export const postTodo = (data: Todo) => {
-   fetch("/api/post", {
-     method: "POST",
-     headers: { "Content-Type": "application/json" },
-     body: JSON.stringify(data),
-   })
-     .then((response) => console.log("Response", response))
-     .catch((error) => {
-       console.log("Error", error);
-     });
+   fetch("/api/post", 
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    }).then((response) => console.log("Response", response))
+    .catch((error) => { console.log("Error", error) })
 };
 
 // functions in AddItem component

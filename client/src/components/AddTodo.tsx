@@ -35,4 +35,4 @@ const AddTodo: React.FC<Props> = ({ dataUpdate, setDataUpdate }) => {
     )
 }
 
-export default AddTodo
+export default AddTodo;

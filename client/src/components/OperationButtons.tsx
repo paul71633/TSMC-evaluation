@@ -2,7 +2,6 @@ import { Todo } from "../interfaces/Todo.interface";
 import styled from 'styled-components';
 import { deleteTodo } from "./api";
 
-// define "Props" interface with seven members 
 interface Props {
     backendData: Todo[];
     dataUpdate: boolean;
@@ -12,9 +11,7 @@ interface Props {
     sortDataByTime: boolean;
     setSortDataByTime: React.Dispatch<React.SetStateAction<boolean>>;
 }
-// define "todoID" interface with one property 'id' 
 
-// define component AddTodo with properties(Props)
 const OperationButtons: React.FC<Props> = ({ 
     backendData, 
     dataUpdate, 
