@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { useState } from 'react';
 import uuid from 'react-uuid';
-import { Todo } from '../interfaces/Todo.interface'
 import PriorityItems from './PriorityItems';
+import { postTodo } from './api';
 
 interface Props {
     dataUpdate: boolean;
@@ -11,14 +11,6 @@ interface Props {
 const AddTodo: React.FC<Props> = ({ dataUpdate, setDataUpdate }) => {
 
     const [thingsTodo, setThingsTodo] = useState<string>("");
-
-    const postTodo = (data: Todo) => {
-        fetch("/api/post", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) })
-            .then(response => console.log("Response", response))
-            .catch(error => {
-                console.log("Error", error)
-            })
-    }
 
     const handleSubmit = (e: React.SyntheticEvent) => {
         e.preventDefault();
@@ -43,4 +35,4 @@ const AddTodo: React.FC<Props> = ({ dataUpdate, setDataUpdate }) => {
     )
 }
 
-export default AddTodo
+export default AddTodo;
