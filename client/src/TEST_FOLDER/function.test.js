@@ -2,6 +2,10 @@ import { render, screen, waitFor } from "@testing-library/react";
 import App from "../App";
 import AddTodo from "../components/AddTodo";
 import * as fun from "../components/api";
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { act } from "react-dom/test-utils";
+import TodoItem from "../components/TodoItem";
 
 /**
  * Mock the api module so that we can inject
@@ -23,14 +27,29 @@ describe("AddTodo Component", () => {
   beforeEach(() => jest.clearAllMocks());
 
   test("Does function postTodo work?", async () => {
+    const div = document.createElement("div");
+    const root = ReactDOM.createRoot(div);
+    const testData = { name: "test data1", id: "12fd31", priority: "High", completed: false, completedTime: new Date(8640000000000000) };
     // No return value so resolved value = {}
-    fun.postTodo.mockResolvedValue({});
+    // fun.postTodo.mockResolvedValue({});
+    fun.postTodo.mockResolvedValue(testData);
     // Render the component
-    render(<AddTodo />);
+    // render(<AddTodo />);
+
+    // eslint-disable-next-line testing-library/no-unnecessary-act
+    await act(() => {
+      root.render(
+        <React.StrictMode>
+          <TodoItem />
+        </React.StrictMode>
+      )
+    })
+    // eslint-disable-next-line testing-library/no-node-access
+    expect(div.querySelectorAll("h3")[-1].textContent).toBe("test data1")
     // See if the function works
-    await waitFor(() => {
-      console.log("YES! function works");
-    });
+    // await waitFor(() => {
+    //   console.log("YES! function works");
+    // });
   });
 });
 
