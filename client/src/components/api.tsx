@@ -16,6 +16,61 @@ interface todoEdit {
     priority: string;
 }
 
+const handleErrorCode = (error: Error) => {
+  switch (error.message.substring(0, 3)) {
+    case "400":
+      alert("This is a bad request");
+      break;
+    case "401":
+      alert("This is an unauthorized request");
+      break;
+    case "403":
+      alert("You don't have access right to the content");
+      break;
+    case "404":
+      alert("The server can't find the requested source");
+      break;
+    case "405":
+      alert("This method is not allowed");
+      break;
+    case "406":
+      alert("The content is not acceptable");
+      break;
+    case "407":
+      alert("Authentication for Proxy is required");
+      break;
+    case "408":
+      alert("Request timeout, the server would like to shut down this unused connection");
+      break;
+    case "409":
+      alert("Request conflicts with the current state of the server");
+      break;
+    case "410":
+      alert("Requested content has been permanantly deleted from the server");
+      break;
+    case "500":
+      alert("There is an internal server error");
+      break;
+    case "501":
+      alert("Request method is not supported by the server and can't be handled");
+      break;
+    case "502":
+      alert("Server working as a gateway got an invalid response");
+      break;
+    case "503":
+      alert("Server can't process the request due to a system overload");
+      break;
+    case "504":
+      alert("Server didn't response within the time frame the gateway was willing to wait");
+      break;
+    case "505":
+      alert("HTTP version used in the request is not supported by the server");
+      break;
+    default:
+      alert(error.message);
+  }
+}
+
 // function in AddTodo component
 export const postTodo = (data: Todo) => {
    fetch("/api/post", 
@@ -23,8 +78,17 @@ export const postTodo = (data: Todo) => {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
-    }).then((response) => console.log("Response", response))
-    .catch((error) => { console.log("Error", error) })
+    }).then((response) => {
+      if (response.ok) {
+        return response.json()
+      }
+      console.log("Response", response);
+      throw new Error(response.status.toString() + response.statusText);
+    })
+    .catch((error) => { 
+      handleErrorCode(error);
+      // console.log("Error", error); 
+    })
 };
 
 // functions in AddItem component
