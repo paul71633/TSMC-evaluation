@@ -3,6 +3,7 @@ import AddTodo from './components/AddTodo';
 import TodoItem from './components/TodoItem';
 import { Todo } from './interfaces/Todo.interface';
 import { sortTasksByPriority, sortTasksByTime } from './components/api';
+import OperationButtons from './components/OperationButtons';
 
 const App = () => {
 
@@ -34,9 +35,12 @@ const App = () => {
     <div>
       <h1>My Todo List</h1>
       <AddTodo dataUpdate={dataUpdate} setDataUpdate={setDataUpdate} />
+      <OperationButtons backendData={backendData} dataUpdate={dataUpdate} setDataUpdate={setDataUpdate}
+                sortDataByPriority={sortDataByPriority} setSortDataByPriority={setSortDataByPriority}
+                sortDataByTime={sortDataByTime} setSortDataByTime={setSortDataByTime}
+      />
       {backendData.length > 0 ? <TodoItem backendData={backendData} dataUpdate={dataUpdate} setDataUpdate={setDataUpdate}
-                      sortDataByPriority={sortDataByPriority} setSortDataByPriority={setSortDataByPriority}
-                      sortDataByTime={sortDataByTime} setSortDataByTime={setSortDataByTime} />
+                      sortDataByPriority={sortDataByPriority} sortDataByTime={sortDataByTime} />
         : <h3>Nothing Yet...</h3>}
     </div>
   )

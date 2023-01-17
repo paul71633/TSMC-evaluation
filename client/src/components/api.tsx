@@ -80,10 +80,11 @@ export const postTodo = (data: Todo) => {
       body: JSON.stringify(data),
     }).then((response) => {
       if (response.ok) {
-        return response.json()
+        return response.blob();
+      } else {
+        console.log("Response", response);
+        throw new Error(response.status.toString() + response.statusText);
       }
-      console.log("Response", response);
-      throw new Error(response.status.toString() + response.statusText);
     })
     .catch((error) => { 
       handleErrorCode(error);

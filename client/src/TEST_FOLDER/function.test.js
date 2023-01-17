@@ -21,7 +21,7 @@ jest.mock("../components/api");
   { name: "test data3", id: "123hgj3", priority: "Alarming", completed: false, completedTime: new Date(8640000000002000) },
 ];
 
-describe("AddTodo Component", () => {
+describe("TodoItem Component", () => {
   
   // After each test clear the mock
   beforeEach(() => jest.clearAllMocks());
@@ -40,12 +40,14 @@ describe("AddTodo Component", () => {
     await act(() => {
       root.render(
         <React.StrictMode>
-          <TodoItem />
+          <TodoItem backendData={[testData]}/>
         </React.StrictMode>
       )
     })
+
+    console.log(div.innerHTML);
     // eslint-disable-next-line testing-library/no-node-access
-    expect(div.querySelectorAll("h3")[-1].textContent).toBe("test data1")
+    expect(div.querySelectorAll("h3")[0].textContent.trim()).toBe("test data1");
     // See if the function works
     // await waitFor(() => {
     //   console.log("YES! function works");
@@ -53,7 +55,7 @@ describe("AddTodo Component", () => {
   });
 });
 
-describe("TodoItem Component", () => {
+describe("AddTodo Component", () => {
   
   // After each test clear the mock
   beforeEach(() => jest.clearAllMocks());
