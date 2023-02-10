@@ -4,16 +4,13 @@ import styled from 'styled-components';
 import PriorityItems from "./PriorityItems";
 import EditInput from "./EditInput";
 import { deleteTodo, patchEdit, patchTodo } from "./api";
-import OperationButtons from "./OperationButtons";
 
 interface Props {
     backendData: Todo[];
     dataUpdate: boolean;
     setDataUpdate: React.Dispatch<React.SetStateAction<boolean>>;
     sortDataByPriority: boolean;
-    setSortDataByPriority: React.Dispatch<React.SetStateAction<boolean>>;
     sortDataByTime: boolean;
-    setSortDataByTime: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const TodoItem: React.FC<Props> = ({ 
@@ -21,9 +18,8 @@ const TodoItem: React.FC<Props> = ({
     dataUpdate, 
     setDataUpdate, 
     sortDataByPriority, 
-    setSortDataByPriority,
-    sortDataByTime, 
-    setSortDataByTime }) => {
+    sortDataByTime
+    }) => {
     const [editButtonClicked, setEditButtonClicked] = useState<boolean>(false);
     const [editID, setEditID] = useState<number[]>([]);
 
@@ -77,47 +73,41 @@ const TodoItem: React.FC<Props> = ({
     }
 
     return (
-        <>
-            <OperationButtons backendData={backendData} dataUpdate={dataUpdate} setDataUpdate={setDataUpdate}
-                sortDataByPriority={sortDataByPriority} setSortDataByPriority={setSortDataByPriority}
-                sortDataByTime={sortDataByTime} setSortDataByTime={setSortDataByTime}
-            />
-            <div>
-                {backendData.map((todo: Todo, index: number) =>
-                    <div style={{display: "flex", alignItems: "center"}}>
-                        <input type="checkbox" id={todo.id} onChange={e => handleCheck(e)} checked={todo.completed} />
-                        <h3 id={index.toString() + "text"} style={{ marginLeft: "10px" }}>
-                            {todo.name}
-                        </h3>
-                        <EditInput 
-                            id={index.toString() + "textInput"}
-                            value={todo.name}
-                            sortDataByPriority={sortDataByPriority}
-                            sortDataByTime={sortDataByTime} 
-                        />
-                        <PriorityItems 
-                            id={index.toString() + "priority"} 
-                            value={todo.priority} 
-                            style={{ display: "none", marginLeft: "10px" }}
-                            sortDataByPriority={sortDataByPriority}
-                            sortDataByTime={sortDataByTime} 
-                        />
-                        {editButtonClicked && editID.includes(index) ? (
-                            <StyledIndividualButton id={index.toString() + "save" + todo.id} onClick={e => handleSave(e)} >
-                                SAVE
-                            </StyledIndividualButton>) : (
-                            <StyledIndividualButton id={index.toString() + "edit" + todo.id} onClick={e => handleEdit(e)} >
-                                EDIT
-                            </StyledIndividualButton>
-                        )}
-                        <StyledIndividualButton id={todo.id} onClick={handleDelete} 
-                        style={{ background: "red", color: "white" }}>
-                            DELETE
+        <div>
+            {backendData?.map((todo: Todo, index: number) =>
+                <div key={todo.id} style={{display: "flex", alignItems: "center"}}>
+                    <input type="checkbox" id={todo.id} onChange={e => handleCheck(e)} checked={todo.completed} />
+                    <h3 id={index.toString() + "text"} style={{ marginLeft: "10px" }}>
+                        {todo.name}
+                    </h3>
+                    <EditInput 
+                        id={index.toString() + "textInput"}
+                        value={todo.name}
+                        sortDataByPriority={sortDataByPriority}
+                        sortDataByTime={sortDataByTime} 
+                    />
+                    <PriorityItems 
+                        id={index.toString() + "priority"} 
+                        value={todo.priority} 
+                        style={{ display: "none", marginLeft: "10px" }}
+                        sortDataByPriority={sortDataByPriority}
+                        sortDataByTime={sortDataByTime} 
+                    />
+                    {editButtonClicked && editID.includes(index) ? (
+                        <StyledIndividualButton id={index.toString() + "save" + todo.id} onClick={e => handleSave(e)} >
+                            SAVE
+                        </StyledIndividualButton>) : (
+                        <StyledIndividualButton id={index.toString() + "edit" + todo.id} onClick={e => handleEdit(e)} >
+                            EDIT
                         </StyledIndividualButton>
-                    </div>
-                )}
-            </div>
-        </>
+                    )}
+                    <StyledIndividualButton id={todo.id} onClick={handleDelete} 
+                    style={{ background: "red", color: "white" }}>
+                        DELETE
+                    </StyledIndividualButton>
+                </div>
+            )}
+        </div>   
     )
 }
 
